@@ -9,6 +9,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const searchBtn = this.document.querySelector('.btn-search');
   const inputSearch = this.document.querySelector('.input');
   const pagination = this.document.querySelector('.pagination');
+  const overlay = document.getElementById('overlay');
 
   async function getRequest() {
     await axios
@@ -69,11 +70,30 @@ window.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+  function closeOverlay(e) {
+    overlay.style.display = 'none';
+    document.body.classList.remove('modal-open');
+  }
+
+  overlay.addEventListener('click', function (e) {
+    closeOverlay(e);
+  });
+  this.document.addEventListener('keyup', function (e) {
+    if (e.key === 'Escape') {
+      closeOverlay(e);
+    }
+  });
+
   function renderImages(arrayOfImages) {
     if (arrayOfImages.length > 0) {
+      window.on = function (item) {
+        overlay.style.display = 'block';
+        overlay.innerHTML = `<img src=${item} id="img"/>`;
+        document.body.classList.add('modal-open');
+      };
       arrayOfImages.map((item) => {
         items.innerHTML += `<div class="row w-75 p-3">
-        <img src=${item.largeImageURL} class="img-fluid col-sm w-100 p-3" style="height: 500px; box-shadow: 0px 0px 10px 5px grey; border-radius: 10px; object-fit: cover;" alt="Responsive image" />
+        <img src=${item.largeImageURL} class="img-fluid col-sm w-100 p-3" style="height: 500px; box-shadow: 0px 0px 10px 5px grey; border-radius: 10px; object-fit: cover; cursor: pointer" onclick="on(\'${item.largeImageURL}'\)" alt="Responsive image" />
         </div>
         `;
       });
