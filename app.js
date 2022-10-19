@@ -10,6 +10,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const inputSearch = this.document.querySelector('.input');
   const pagination = this.document.querySelector('.pagination');
   const overlay = document.getElementById('overlay');
+  const popup = document.getElementById('myPopup');
 
   async function getRequest() {
     await axios
@@ -57,6 +58,8 @@ window.addEventListener('DOMContentLoaded', function () {
   searchBtn.addEventListener('click', function (e) {
     if (inputSearch.value != '') {
       e.preventDefault();
+      inputSearch.classList.remove('warning');
+      popup.classList.remove('show');
       SEARCH_REQUEST = inputSearch.value;
       inputSearch.value = '';
       pageItems.forEach((item) => {
@@ -65,7 +68,9 @@ window.addEventListener('DOMContentLoaded', function () {
       pageItems[0].classList.add('active');
       getRequest();
     } else {
-      alert('You need to type smth!');
+      e.preventDefault();
+      popup.classList.add('show');
+      inputSearch.classList.add('warning');
       inputSearch.focus();
     }
   });
